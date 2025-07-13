@@ -1,14 +1,6 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  phone: { type: String, required: true, unique: true },
-});
-
-const User = mongoose.model("User", userSchema);
+import User from "../models/userModel";
 
 const createUser = async (
   email: string | null,
@@ -38,36 +30,40 @@ const checkExistingUser = async (
 
 // Signup with email controller
 export const signupWithEmail = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required.' });
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ message: "Email and password are required." });
+  }
+  try {
+    const existingUser = await checkExistingUser(email, null);
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
-    try {
-        const existingUser = await checkExistingUser(email, null);
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-        await createUser(email, null, password);
-        res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating user', error });
-    }
+    await createUser(email, null, password);
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating user", error });
+  }
 };
 
 // Signup with phone controller
 export const signupWithPhone = async (req: Request, res: Response) => {
-    const { phone, password } = req.body;
-    if (!phone || !password) {
-        return res.status(400).json({ message: 'Phone and password are required.' });
+  const { phone, password } = req.body;
+  if (!phone || !password) {
+    return res
+      .status(400)
+      .json({ message: "Phone and password are required." });
+  }
+  try {
+    const existingUser = await checkExistingUser(null, phone);
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
-    try {
-        const existingUser = await checkExistingUser(null, phone);
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-        await createUser(null, phone, password);
-        res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating user', error });
-    }
+    await createUser(null, phone, password);
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating user", error });
+  }
 };
