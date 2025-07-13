@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import Auth from "../models/authModel";
 import User from "../models/userModel";
+import { validateRequiredFields } from "../utils/validation";
 
 const createAuth = async (
   identifier: string,
@@ -21,21 +22,6 @@ const createUser = async (email: string, phone: string, name: string) => {
 
 const checkExistingAuth = async (identifier: string) => {
   return await Auth.findOne({ identifier: identifier.toLowerCase() });
-};
-
-// Utility to check required fields
-const validateRequiredFields = (
-  fields: Record<string, any>,
-  required: string[],
-  res: Response,
-  message: string,
-) => {
-  for (const field of required) {
-    if (!fields[field]) {
-      return res.status(400).json({ message });
-    }
-  }
-  return null;
 };
 
 // Signup with email controller
