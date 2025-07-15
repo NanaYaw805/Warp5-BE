@@ -1,6 +1,18 @@
 import request from "supertest";
 import app from "./app";
 
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+
+beforeAll(async () => {
+  await mongoose.connect(process.env.MONGODB_URI as string);
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+});
+
 describe("Auth Controller", () => {
   const uniqueEmail = () => `test_${Date.now()}@example.com`;
   const uniquePhone = () => `${Math.floor(Math.random() * 1e10)}`;

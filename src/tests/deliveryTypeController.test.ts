@@ -11,6 +11,7 @@ describe("Delivery Type Controller", () => {
 
   // Clean up database before and after tests
   beforeAll(async () => {
+    await mongoose.connect(process.env.MONGODB_URI as string);
     await DeliveryType.deleteMany({});
   });
 
