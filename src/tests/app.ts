@@ -4,6 +4,12 @@ import {
   signupWithEmail,
   signupWithPhone,
 } from "../controllers/authController";
+import {
+  createDeliveryType,
+  getAllDeliveryTypes,
+  updateDeliveryType,
+  deleteDeliveryType,
+} from "../controllers/deliveryTypeController";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -26,8 +32,15 @@ app.get("/", (req, res) => {
   res.send("Hello, World!!");
 });
 
+// Auth routes
 app.post("/signup/email", signupWithEmail);
 app.post("/signup/phone", signupWithPhone);
+
+// Delivery type routes
+app.post("/delivery-types", createDeliveryType);
+app.get("/delivery-types", getAllDeliveryTypes);
+app.put("/delivery-types/:id", updateDeliveryType);
+app.delete("/delivery-types/:id", deleteDeliveryType);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
