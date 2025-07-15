@@ -14,7 +14,8 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test": "jest --runInBand --detectOpenHandles",
+    "test:only": "sh -c 'jest --runInBand --detectOpenHandles src/tests/$0Controller.test.ts'"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
