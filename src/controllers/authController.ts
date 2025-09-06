@@ -44,7 +44,9 @@ export const signupWithEmail = async (req: Request, res: Response) => {
 
     await createAuth(formattedEmail, password, "email");
     await createUser(formattedEmail, phone, name);
-    res.status(201).json({ message: "User created successfully" });
+    res
+      .status(201)
+      .json({ message: "User created successfully", data: { name, email } });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error });
   }
@@ -69,7 +71,7 @@ export const signupWithPhone = async (req: Request, res: Response) => {
 
     await createAuth(phone, password, "phone");
     await createUser(email, phone, name);
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "User created successfully", data: { name, phone } });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error });
   }
