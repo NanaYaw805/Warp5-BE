@@ -29,7 +29,7 @@ export const signupWithEmail = async (req: Request, res: Response) => {
   const { email, phone, password, name } = req.body;
   const missing = validateRequiredFields(
     req.body,
-    ["email", "phone", "password", "name"],
+    ["email", "password", "name"],
     res,
     "Email, phone, password, and name are required.",
   );
@@ -55,7 +55,7 @@ export const signupWithPhone = async (req: Request, res: Response) => {
   const { email, phone, password, name } = req.body;
   const missing = validateRequiredFields(
     req.body,
-    ["email", "phone", "password", "name"],
+    ["phone", "password", "name"],
     res,
     "Email, phone, password, and name are required.",
   );
